@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  robot-service:
+    build:
+      context: ../../
+      dockerfile: backend/robot-service/Dockerfile
+    ports:
+      - "50051:50051"
+    depends_on:
+      - robot-db
+    networks:
+      - saga_network
+  robot-db:
+    image: postgis/postgis:15-3.3
+    environment:
+      POSTGRES_USER: robot_user
+      POSTGRES_PASSWORD: Robot@123
+      POSTGRES_DB: robot_db
+    ports:
+      - "5005:5432"
+    networks:
+      - saga_network
+networks:
+  saga_network:
+    external: true
